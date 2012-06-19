@@ -159,15 +159,15 @@ module Tinder
         end
 
         @stream.on_error do |message|
-          raise ListenFailed.new("got an error! #{message.inspect}!")
+          Tinder.logger.error("got an error! #{message.inspect}!")
         end
 
         @stream.on_max_reconnects do |timeout, retries|
-          raise ListenFailed.new("Tried #{retries} times to connect. Got disconnected from #{@name}!")
+          Tinder.logger.error("Tried #{retries} times to connect. Got disconnected from #{@name}!")
         end
 
         # if we really get disconnected
-        raise ListenFailed.new("got disconnected from #{@name}!") if !EventMachine.reactor_running?
+        Tinder.logger.error("got disconnected from #{@name}!") if !EventMachine.reactor_running?
       end
     end
 
